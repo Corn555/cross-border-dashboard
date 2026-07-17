@@ -1,83 +1,83 @@
-# Project Roadmap
+# 项目路线图
 
-## V1.0 — Local Data Analysis (Current)
+## V1.0 — 本地数据分析 ✅ DONE
 
-**Goal**: Complete the full data analysis pipeline locally. Every module runs
-from `main.py` and produces verifiable output in the terminal and as files.
+**目标**：完成完整的数据分析管道。所有模块通过 `main.py` 一键运行，
+输出终端报告 + HTML 报告 + 图表文件。
 
-**Tech**: Python, Pandas, NumPy, Matplotlib
+**技术栈**：Python, Pandas, NumPy, Matplotlib
 
-### Milestones
+### 里程碑
 
-| # | Module | Deliverable | Acceptance Criteria |
-|---|--------|------------|---------------------|
-| M1 | DataProfiler | Data quality report in terminal | Missing%, duplicate count, anomaly flags printed |
-| M2 | DataCleaner | `data/processed/sales_clean.csv` | Before/after row count compared; no nulls, no negatives |
-| M3 | SalesAnalyzer | Sales KPI dict + terminal summary | Revenue, monthly trend, top products, top countries printed |
-| M4 | CustomerAnalyzer | RFM table + terminal summary | Customer segments printed; country distribution shown |
-| M5 | Visualizer | 8 charts saved to `output/charts/` | All charts render correctly with titles, labels, legends |
-| M6 | ReportGenerator | `output/reports/report.html` | Self-contained HTML report with all KPIs and embedded charts |
+| # | 模块 | 交付物 | 状态 |
+|---|--------|------------|------|
+| M1 | DataProfiler | 数据质量诊断报告（终端输出） | ✅ |
+| M2 | DataCleaner | `data/processed/sales_clean.csv` | ✅ |
+| M3 | SalesAnalyzer | 销售 KPI + 图表数据（总营收 $8.89M、18.5K 订单） | ✅ |
+| M4 | CustomerAnalyzer | RFM 客户分层 + 地理分布（4,338 客户、三层分级） | ✅ |
+| M5 | Visualizer | 8 张 Matplotlib 图表 → `output/charts/` | ✅ |
+| M6 | ReportGenerator | 自包含 HTML 报告 → `output/reports/report.html` | ✅ |
 
-**Target**: 6 commits on `main`, one per milestone.
+**V1 成果**：7 个 src 模块、6 个 commit、一键运行 `python main.py` 输出完整分析。
 
 ---
 
-## V2.0 — Interactive Dashboard
+## V2.0 — 互动看板 🚧 规划中
 
-**Goal**: Replace terminal output with a web-based interactive dashboard.
+**目标**：将终端输出升级为 Web 互动看板。
 
-**Tech additions**: Streamlit, Plotly (optional)
+**技术栈新增**：Streamlit, Plotly（可选）
 
-### Planned Features
+### 计划功能
 
-- Streamlit web app with sidebar navigation
-- Interactive filters: date range, country, product
-- Dynamic charts (zoom, hover tooltips)
-- Data upload: upload your own CSV for analysis
-- Configuration file (`config.yaml`) for paths and parameters
+- Streamlit Web 应用，侧边栏导航
+- 互动过滤器：日期范围、国家多选、商品搜索
+- 动态图表（缩放、悬停提示）
+- 数据上传：支持用户上传自己的 CSV 文件
+- 配置文件（`config.yaml`）管理路径和参数
 
-### Milestones
+### 里程碑
 
-| # | Feature | Description |
+| # | 模块 | 描述 |
 |---|---------|------------|
-| M7 | Streamlit Setup | Basic app with page structure and navigation |
-| M8 | Interactive Filters | Date picker, country multi-select, product search |
-| M9 | Dynamic Charts | Replace Matplotlib PNGs with Plotly interactive charts |
-| M10 | File Upload | Allow users to upload their own dataset |
-| M11 | Config System | YAML config for all paths and analysis parameters |
+| M7 | Streamlit 框架 | 基础应用，页面结构和导航 |
+| M8 | 互动过滤器 | 日期选择器、国家多选、商品搜索 |
+| M9 | 动态图表 | 用 Plotly 替换 Matplotlib PNG |
+| M10 | 文件上传 | 允许用户上传自定义数据集 |
+| M11 | 配置系统 | YAML 配置文件管理所有路径和参数 |
 
 ---
 
-## V3.0 — AI-Powered Analysis
+## V3.0 — AI 智能分析 🚧 规划中
 
-**Goal**: Integrate AI to generate narrative analysis reports and insights.
+**目标**：集成 AI 生成叙述性分析报告和深度洞察。
 
-**Tech additions**: OpenAI API (or Anthropic Claude API)
+**技术栈新增**：OpenAI API / Anthropic Claude API
 
-### Planned Features
+### 计划功能
 
-- English narrative report: AI-generated summary of key findings
-- Anomaly detection: AI flags unusual patterns in the data
-- Natural language query: "Show me sales in Germany for Q4" → auto-generated chart
-- PDF export: polished report with charts + narrative
-- Email report scheduling
+- 英文叙述性报告：AI 自动生成关键发现总结
+- 异常检测：AI 标记数据中的异常模式
+- 自然语言查询："德国 Q4 的销售情况如何？" → 自动生成图表
+- PDF 导出：精美排版的多页 PDF 报告
+- 邮件定时发送报告
 
-### Milestones
+### 里程碑
 
-| # | Feature | Description |
+| # | 模块 | 描述 |
 |---|---------|------------|
-| M12 | AI Summary | Generate English narrative from analysis results |
-| M13 | Anomaly Detection | AI identifies and explains data anomalies |
-| M14 | NL Query | Text input → auto-generated chart |
-| M15 | PDF Export | Polished multi-page PDF report |
-| M16 | Scheduling | Automated report generation on a schedule |
+| M12 | AI 摘要 | 从分析结果自动生成英文叙述 |
+| M13 | 异常检测 | AI 发现并解释数据异常 |
+| M14 | 自然语言查询 | 文本输入 → 自动生成图表 |
+| M15 | PDF 导出 | 精美多页 PDF 报告 |
+| M16 | 定时发送 | 自动化定时报告生成 |
 
 ---
 
-## Version Summary
+## 版本总览
 
 ```
-V1.0  ──  Terminal + File Output  ──  Python CLI
-V2.0  ──  Web Dashboard           ──  Streamlit + Plotly
-V3.0  ──  AI Reports              ──  LLM API + PDF
+V1.0  ✅  终端 + 文件输出     ──  Python CLI（当前）
+V2.0  🚧  Web 互动看板       ──  Streamlit + Plotly
+V3.0  🚧  AI 智能报告        ──  LLM API + PDF
 ```
