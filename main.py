@@ -6,6 +6,7 @@ from src.data_cleaner import clean_data
 from src.sales_analyzer import analyze_sales
 from src.customer_analyzer import analyze_customers
 from src.visualizer import create_charts
+from src.report_generator import generate_report
 
 
 def main():
@@ -31,6 +32,14 @@ def main():
 
     # Step 5: 图表生成
     charts = create_charts(sales, customers)
+
+    # Step 6: 生成 HTML 报告
+    generate_report(sales, customers, charts, cleaning_stats=result["stats"])
+
+    print("=" * 56)
+    print("  全部分析流程完成！")
+    print(f"  报告位置: output/reports/report.html")
+    print("=" * 56 + "\n")
 
 
 if __name__ == "__main__":
