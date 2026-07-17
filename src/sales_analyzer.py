@@ -1,30 +1,29 @@
 """
-Module: sales_analyzer
-Responsibility: Compute sales KPIs — revenue, trends, top products,
-                top countries, average order value.
+模块：销售分析器
+职责：计算销售核心指标——总营收、月度趋势、热销商品、国家分布、客单价。
 """
 import pandas as pd
 
 
 def analyze_sales(df: pd.DataFrame) -> dict:
     """
-    Compute all sales KPIs from the cleaned DataFrame.
+    基于清洗后的数据计算所有销售 KPI。
 
     Args:
-        df: Cleaned DataFrame (must have TotalSales, InvoiceDate,
-            Description, Country, Invoice columns).
+        df: 清洗后的 DataFrame（需包含 TotalSales, InvoiceDate,
+            Description, Country, Invoice 列）。
 
     Returns:
-        dict with keys: total_revenue, total_orders, avg_order_value,
+        dict，包含：total_revenue, total_orders, avg_order_value,
         total_customers, monthly_revenue (DataFrame),
-        top_products (DataFrame), top_countries (DataFrame).
+        top_products (DataFrame), top_countries (DataFrame)。
     """
     total_revenue = float(df["TotalSales"].sum())
     total_orders = int(df["Invoice"].nunique())
     total_customers = int(df["Customer ID"].nunique())
     avg_order_value = total_revenue / total_orders if total_orders else 0.0
 
-    # Monthly revenue trend
+    # 月度营收趋势
     monthly_revenue = (
         df.set_index("InvoiceDate")
         .resample("ME")["TotalSales"]
@@ -33,7 +32,7 @@ def analyze_sales(df: pd.DataFrame) -> dict:
     )
     monthly_revenue.columns = ["Month", "Revenue"]
 
-    # Top 10 products by revenue
+    # Top 10 商品（按营收）
     top_products = (
         df.groupby("Description")["TotalSales"]
         .sum()
@@ -43,7 +42,7 @@ def analyze_sales(df: pd.DataFrame) -> dict:
     )
     top_products.columns = ["Product", "Revenue"]
 
-    # Top 10 countries by revenue
+    # Top 10 国家（按营收）
     top_countries = (
         df.groupby("Country")["TotalSales"]
         .sum()
@@ -53,7 +52,7 @@ def analyze_sales(df: pd.DataFrame) -> dict:
     )
     top_countries.columns = ["Country", "Revenue"]
 
-    # Top 10 countries by order count
+    # Top 10 国家（按订单数）
     top_countries_orders = (
         df.groupby("Country")["Invoice"]
         .nunique()
@@ -74,21 +73,21 @@ def analyze_sales(df: pd.DataFrame) -> dict:
         "top_countries_orders": top_countries_orders,
     }
 
-    # --- Print summary ---
+    # --- 打印销售分析摘要 ---
     print("\n" + "=" * 56)
-    print("  SALES ANALYSIS")
+    print("  销售分析报告")
     print("=" * 56)
-    print(f"  Total Revenue       : $ {total_revenue:>12,.2f}")
-    print(f"  Total Orders        :   {total_orders:>12,}")
-    print(f"  Total Customers     :   {total_customers:>12,}")
-    print(f"  Avg Order Value     : $ {avg_order_value:>12,.2f}")
+    print(f"  总营收（$）        : $ {total_revenue:>12,.2f}")
+    print(f"  总订单数           :   {total_orders:>12,}")
+    print(f"  总客户数           :   {total_customers:>12,}")
+    print(f"  平均客单价（$）    : $ {avg_order_value:>12,.2f}")
     print("-" * 56)
-    print("  Top 5 Products by Revenue")
+    print("  Top 5 商品（按营收）")
     for _, row in top_products.head(5).iterrows():
         desc = str(row["Product"])[:38]
         print(f"  {desc:<38s} $ {row['Revenue']:>10,.0f}")
     print("-" * 56)
-    print("  Top 5 Countries by Revenue")
+    print("  Top 5 国家（按营收）")
     for _, row in top_countries.head(5).iterrows():
         print(f"  {row['Country']:<38s} $ {row['Revenue']:>10,.0f}")
     print("=" * 56 + "\n")

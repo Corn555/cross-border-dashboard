@@ -2,25 +2,29 @@ from src.data_loader import load_data
 from src.data_profiler import profile_data
 from src.data_cleaner import clean_data
 from src.sales_analyzer import analyze_sales
+from src.customer_analyzer import analyze_customers
 
 
 def main():
-    """Run the full data analysis pipeline."""
-    # Load
+    """运行完整的数据分析流程。"""
+    # 加载数据
     df = load_data("data/raw/sales.csv")
     if df is None:
-        print("Pipeline stopped: failed to load data.")
+        print("流程终止：数据加载失败。")
         return
 
-    # Step 1: Diagnose data quality
+    # Step 1: 数据质量诊断
     profile_data(df)
 
-    # Step 2: Clean data
+    # Step 2: 数据清洗
     result = clean_data(df)
     df_clean = result["dataframe"]
 
-    # Step 3: Sales analysis
+    # Step 3: 销售分析
     sales = analyze_sales(df_clean)
+
+    # Step 4: 客户分析
+    customers = analyze_customers(df_clean)
 
 
 if __name__ == "__main__":

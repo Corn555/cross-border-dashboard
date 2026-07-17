@@ -18,21 +18,22 @@
 
 ### 2.2 Functions
 
-Every public function follows this template:
+Every public function follows this template (**comments & docstrings in Chinese**,
+code identifiers in English):
 
 ```python
 def do_something(dataframe, param):
     """
-    Short description of what this function does.
+    函数功能简述。
 
     Args:
-        dataframe (pd.DataFrame): Input data.
-        param (int): Threshold value.
+        dataframe (pd.DataFrame): 输入数据。
+        param (int): 阈值。
 
     Returns:
-        dict: Keys and their meanings.
+        dict: 返回字段说明。
     """
-    # Implementation
+    # 具体实现
     return result
 ```
 
@@ -165,9 +166,10 @@ V2 will add:
 - One test file per source module under `tests/`
 - Minimum 80% function coverage
 
-## 8. Communication
+## 8. Language Policy
 
-- Code comments explain **why**, not **what** (the code explains what)
-- Commit messages explain **what changed** from the user's perspective
-- Architecture doc explains **where things go** and **how they connect**
-- This document explains **how we work**
+- **代码标识符**（变量名、函数名、列名）：英文（PEP 8 要求）
+- **注释 & docstring**：中文（便于理解和沟通）
+- **Commit message**：英文（Conventional Commits 规范）
+- **终端输出 & 报告**：中文（面向中文用户）
+- **文档**（ARCHITECTURE, DEVELOPMENT, ROADMAP）：中文为主，技术术语保留英文
