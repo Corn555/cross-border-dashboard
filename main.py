@@ -1,8 +1,11 @@
+import sys
+
 from src.data_loader import load_data
 from src.data_profiler import profile_data
 from src.data_cleaner import clean_data
 from src.sales_analyzer import analyze_sales
 from src.customer_analyzer import analyze_customers
+from src.visualizer import create_charts
 
 
 def main():
@@ -26,6 +29,10 @@ def main():
     # Step 4: 客户分析
     customers = analyze_customers(df_clean)
 
+    # Step 5: 图表生成
+    charts = create_charts(sales, customers)
+
 
 if __name__ == "__main__":
+    sys.stdout.reconfigure(encoding="utf-8")
     main()
