@@ -10,8 +10,22 @@
 - **商品分析**：热销商品排行、退货率、商品品类洞察
 - **客户分析**：客户地理分布、RFM 分层、客户生命周期价值
 
-> V1.0 已完成并冻结：本地数据分析流程，一键运行输出完整 HTML 报告。
-> V2.0 进行中：工程化升级（Config / Logging / Type Hints / 分层架构）。
+> V1.0 已冻结。V2.2 完成工程化升级：Config / Logger / Exceptions / Type Hints / Testing / PipelineResult。
+
+## Architecture
+
+```
+Presentation Layer    main.py (CLI)              ← 用户入口
+    │
+Application Layer    src/pipeline/              ← 流程编排
+    │
+Business Layer       sales_analyzer, customer_analyzer,
+                     visualizer, report_generator  ← 纯计算
+    │
+Data Layer           data_loader, data_cleaner  ← I/O
+    │
+Infrastructure       src/config/, src/logger/, src/exceptions/, src/models/
+```
 
 ## V1.0 Results
 
@@ -26,43 +40,50 @@
 
 ## Tech Stack
 
-| Layer | Technology | Version |
-|-------|-----------|---------|
-| Language | Python | 3.12+ |
-| Data | Pandas, NumPy | 3.x, 2.x |
-| Visualization | Matplotlib | 3.11+ |
-| Reports | HTML + CSS | — |
-| Version Control | Git | 2.x |
+| Layer | Technology |
+|-------|-----------|
+| Language | Python 3.12+ |
+| Data | Pandas, NumPy |
+| Visualization | Matplotlib |
+| Reports | HTML + CSS (self-contained, base64 images) |
+| Code Quality | Black, Ruff |
+| Testing | pytest |
+| Version Control | Git |
 
 ## Project Structure
 
 ```
 cross-border-dashboard/
-├── data/
-│   ├── raw/                # 原始 CSV（只读，不修改）
-│   └── processed/          # 清洗后 CSV（程序生成）
-├── output/
-│   ├── charts/             # 生成的图表 PNG
-│   └── reports/            # HTML 分析报告
-├── src/                    # 源码模块（每模块一个职责）
-│   ├── data_loader.py      # CSV → DataFrame
-│   ├── data_profiler.py    # 数据质量诊断
-│   ├── data_cleaner.py     # 数据清洗流程
-│   ├── sales_analyzer.py   # 销售 KPI 与趋势
-│   ├── customer_analyzer.py # RFM 客户分层
-│   ├── visualizer.py       # Matplotlib 图表工厂
-│   └── report_generator.py # HTML 报告组装
-├── docs/                   # 架构与规范文档
-│   ├── ARCHITECTURE.md     # 系统架构设计
-│   └── DEVELOPMENT.md      # 开发规范
-├── .gitignore               # Git 忽略规则
-├── main.py                 # 入口 — 一键运行全流程
-├── requirements.txt        # Python 依赖
-├── ROADMAP.md              # 版本路线图
-└── README.md               # 本文件
+├── src/
+│   ├── config/           # 全局配置（Path 对象）
+│   ├── logger/           # 统一日志系统（控制台 + 文件）
+│   ├── exceptions/       # 自定义异常体系（6 类）
+│   ├── models/           # 数据模型（PipelineResult dataclass）
+│   ├── pipeline/         # 流程编排（6 阶段 Pipeline）
+│   ├── data_loader.py    # Data Layer — CSV → DataFrame
+│   ├── data_profiler.py  # Data Layer — 数据质量诊断
+│   ├── data_cleaner.py   # Data Layer — 6 步清洗
+│   ├── sales_analyzer.py # Business Layer — 销售 KPI
+│   ├── customer_analyzer.py  # Business Layer — RFM 分层
+│   ├── visualizer.py     # Business Layer — 8 张图表
+│   └── report_generator.py   # Business Layer — HTML 报告
+├── tests/                # 单元测试（pytest）
+│   ├── conftest.py
+│   ├── test_data_loader.py
+│   ├── test_data_cleaner.py
+│   └── test_sales_analyzer.py
+├── docs/                 # 架构与规范文档
+├── data/                 # 原始 + 处理后数据
+├── output/               # 生成产物（图表 + 报告）
+├── logs/                 # 运行日志
+├── main.py               # CLI 入口
+├── pyproject.toml        # 项目配置（Black, Ruff, pytest）
+├── TECH_DEBT.md          # 技术债务 & 未来路线图
+├── ROADMAP.md            # 版本路线图
+└── README.md
 ```
 
-## Quick Start
+## How to Run
 
 ```bash
 # 1. 创建虚拟环境
@@ -72,29 +93,61 @@ source .venv/bin/activate   # Windows: .venv\Scripts\activate
 # 2. 安装依赖
 pip install -r requirements.txt
 
-# 3. 放入原始数据
-# 将 sales.csv 复制到 data/raw/sales.csv
+# 3. 放入原始数据 — 将 sales.csv 复制到 data/raw/sales.csv
 
 # 4. 运行全流程
 python main.py
 
-# 5. 查看报告
-# 浏览器打开 output/reports/report.html
+# 5. 查看报告 — 浏览器打开 output/reports/report.html
 ```
+
+## How to Test
+
+```bash
+# 运行全部测试
+pytest tests/
+
+# 带详细输出
+pytest tests/ -v
+
+# 运行单个测试文件
+pytest tests/test_sales_analyzer.py -v
+```
+
+## How to Format Code
+
+```bash
+# 代码格式化
+black src/ tests/ main.py
+
+# 代码检查
+ruff check src/ tests/ main.py
+
+# 自动修复
+ruff check --fix src/ tests/ main.py
+```
+
+## How to Add a New Module
+
+1. **确定模块归属层** — 参照 [ARCHITECTURE_V2.md](docs/ARCHITECTURE_V2.md) 的四层模型
+2. **创建源文件** — `src/<layer>/<module>.py`，遵循 [DEVELOPMENT.md](docs/DEVELOPMENT.md) 模板
+3. **添加类型标注** — 所有公共函数签名必须有完整 type hints
+4. **使用 Logger** — `logger = get_logger(__name__)`，不用 `print()`
+5. **编写测试** — `tests/test_<module>.py`，使用 conftest.py 的 fixture
+6. **更新文档** — 如涉及架构变更，更新相关 docs/
+7. **运行全量验证** — `pytest && ruff check && python main.py`
 
 ## Version Progress
 
 | Version | 主题 | 状态 |
 |---------|------|------|
-| V1.0 | Local Analytics — CLI + Matplotlib 报告 | ✅ DONE（已冻结） |
-| V2.0 | Core Engineering — Config, Logging, Type Hints, 分层架构 | 🚧 Sprint 2.1 |
-| V3.0 | Streamlit Dashboard — Web 互动看板 | 🚧 规划中 |
-| V4.0 | Interactive Analytics — Plotly 动态图表 | 🚧 规划中 |
-| V5.0 | AI Report — LLM 智能分析 | 🚧 规划中 |
-| V6.0 | Database Integration — 数据持久化 | 🚧 规划中 |
+| V1.0 | Local Analytics | ✅ 已冻结 |
+| V2.2 | Core Engineering — Config, Logger, Exceptions, Type Hints, Testing | ✅ 完成 |
+| V3.0 | Streamlit Dashboard | 🚧 规划中 |
+| V4.0 | Interactive Analytics — Plotly | 🚧 规划中 |
+| V5.0 | AI Report — LLM | 🚧 规划中 |
+| V6.0 | Database Integration | 🚧 规划中 |
 | V7.0 | Deployment — Docker + Cloud | 🚧 规划中 |
-
-> V1 已冻结（Version Freeze），除 Bug Fix 外不再新增功能。详见 [ROADMAP.md](ROADMAP.md)。
 
 ## Documentation
 
@@ -102,4 +155,5 @@ python main.py
 - [V2+ 系统架构](docs/ARCHITECTURE_V2.md)（分层模型 + 设计原则）
 - [开发规范](docs/DEVELOPMENT.md)
 - [Config 设计方案](docs/CONFIG_DESIGN.md)
+- [技术债务 & 路线图](TECH_DEBT.md)
 - [版本路线图](ROADMAP.md)

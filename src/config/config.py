@@ -5,28 +5,29 @@
 用法：
     from src.config import RAW_DATA_PATH, VERSION
 """
+from pathlib import Path
 
 # ── 项目信息 ──────────────────────────────────
 # 项目显示名称，用于终端输出和报告标题
 PROJECT_NAME = "跨境电商销售数据分析平台"
 # 当前版本号，遵循语义化版本规范
-VERSION = "2.0.0"
+VERSION = "2.2.0"
 
 # ── 数据路径 ──────────────────────────────────
 # 原始 CSV 数据文件路径（只读，不修改）
-RAW_DATA_PATH = "data/raw/sales.csv"
+RAW_DATA_PATH = Path("data/raw/sales.csv")
 # 清洗后数据保存目录
-PROCESSED_DATA_DIR = "data/processed"
+PROCESSED_DATA_DIR = Path("data/processed")
 # 清洗后数据文件完整路径
-PROCESSED_DATA_PATH = "data/processed/sales_clean.csv"
+PROCESSED_DATA_PATH = Path("data/processed/sales_clean.csv")
 
 # ── 输出路径 ──────────────────────────────────
 # 图表 PNG 文件输出目录
-CHARTS_OUTPUT_DIR = "output/charts"
+CHARTS_OUTPUT_DIR = Path("output/charts")
 # HTML 报告输出目录
-REPORTS_OUTPUT_DIR = "output/reports"
+REPORTS_OUTPUT_DIR = Path("output/reports")
 # HTML 报告文件完整路径
-REPORT_OUTPUT_PATH = "output/reports/report.html"
+REPORT_OUTPUT_PATH = Path("output/reports/report.html")
 
 # ── 图表默认参数 ───────────────────────────────
 # 默认图表尺寸 (宽度, 高度)，单位英寸

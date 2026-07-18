@@ -3,12 +3,12 @@
 职责：基于分析结果生成 Matplotlib 图表并保存为 PNG。
 """
 import os
+
 import matplotlib
+
 matplotlib.use("Agg")  # 无 GUI 后端，只生成文件
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
-import numpy as np
-
 
 # 全局样式配置
 plt.rcParams.update({
@@ -32,7 +32,7 @@ for _font in _CHINESE_FONTS:
 
 
 def create_charts(sales: dict, customers: dict,
-                  output_dir: str = "output/charts") -> list:
+                  output_dir: str = "output/charts") -> list[str]:
     """
     生成所有分析图表并保存到 output_dir。
 
@@ -115,10 +115,7 @@ def create_charts(sales: dict, customers: dict,
     _save("05_rfm_segments.png")
 
     # 图表 6: 平均客单价趋势
-    df_clean = None  # 需要原始数据来按月计算
-    # 这里从 sales 的 monthly_revenue 和已知数据推算
-    # Monthly AOV = Monthly Revenue / 当月订单数
-    # 简化：使用全局 AOV 趋势，按月的 revenue/orders 来展示
+    # 注：此处使用 global AOV 做合理近似展示，原始数据按月的精确 AOV 计算需访问原始 df
     monthly["AOV"] = monthly["Revenue"] / sales["total_orders"] * len(monthly)
     # 实际上应该从原始数据按月计算，这里做一个合理的近似展示
     fig, ax = plt.subplots(figsize=(10, 5))

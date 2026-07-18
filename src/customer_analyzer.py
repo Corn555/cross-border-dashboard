@@ -3,10 +3,9 @@
 职责：RFM 客户分层、客户地理分布分析。
 """
 import pandas as pd
-import numpy as np
 
 
-def analyze_customers(df: pd.DataFrame, reference_date: pd.Timestamp = None) -> dict:
+def analyze_customers(df: pd.DataFrame, reference_date: pd.Timestamp | None = None) -> dict:
     """
     基于清洗后的交易数据执行 RFM 分析和客户地理分布统计。
 

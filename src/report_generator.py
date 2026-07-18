@@ -2,8 +2,8 @@
 模块：报告生成器
 职责：将分析结果和图表整合为一份自包含的 HTML 报告。
 """
-import os
 import base64
+import os
 from datetime import datetime
 
 
@@ -13,8 +13,8 @@ def _img_to_base64(path: str) -> str:
         return base64.b64encode(f.read()).decode("utf-8")
 
 
-def generate_report(sales: dict, customers: dict, charts: list,
-                    cleaning_stats: dict = None,
+def generate_report(sales: dict, customers: dict, charts: list[str],
+                    cleaning_stats: dict | None = None,
                     output_path: str = "output/reports/report.html") -> str:
     """
     生成自包含的 HTML 分析报告，内嵌所有图表。
