@@ -10,7 +10,8 @@
 - **商品分析**：热销商品排行、退货率、商品品类洞察
 - **客户分析**：客户地理分布、RFM 分层、客户生命周期价值
 
-> V1.0 已完成：本地数据分析流程，一键运行输出完整 HTML 报告。
+> V1.0 已完成并冻结：本地数据分析流程，一键运行输出完整 HTML 报告。
+> V2.0 进行中：工程化升级（Config / Logging / Type Hints / 分层架构）。
 
 ## V1.0 Results
 
@@ -81,19 +82,24 @@ python main.py
 # 浏览器打开 output/reports/report.html
 ```
 
-## Development Progress
+## Version Progress
 
-- [x] M1 — DataProfiler（数据诊断）
-- [x] M2 — DataCleaner（数据清洗）
-- [x] M3 — SalesAnalyzer（销售分析）
-- [x] M4 — CustomerAnalyzer（RFM 客户分析）
-- [x] M5 — Visualizer（8 张图表）
-- [x] M6 — ReportGenerator（HTML 报告）
-- [ ] V2.0 — Streamlit 互动看板
-- [ ] V3.0 — AI 分析报告
+| Version | 主题 | 状态 |
+|---------|------|------|
+| V1.0 | Local Analytics — CLI + Matplotlib 报告 | ✅ DONE（已冻结） |
+| V2.0 | Core Engineering — Config, Logging, Type Hints, 分层架构 | 🚧 Sprint 2.1 |
+| V3.0 | Streamlit Dashboard — Web 互动看板 | 🚧 规划中 |
+| V4.0 | Interactive Analytics — Plotly 动态图表 | 🚧 规划中 |
+| V5.0 | AI Report — LLM 智能分析 | 🚧 规划中 |
+| V6.0 | Database Integration — 数据持久化 | 🚧 规划中 |
+| V7.0 | Deployment — Docker + Cloud | 🚧 规划中 |
+
+> V1 已冻结（Version Freeze），除 Bug Fix 外不再新增功能。详见 [ROADMAP.md](ROADMAP.md)。
 
 ## Documentation
 
-- [架构设计文档](docs/ARCHITECTURE.md)
+- [V1 系统架构](docs/ARCHITECTURE.md)（已冻结）
+- [V2+ 系统架构](docs/ARCHITECTURE_V2.md)（分层模型 + 设计原则）
 - [开发规范](docs/DEVELOPMENT.md)
+- [Config 设计方案](docs/CONFIG_DESIGN.md)
 - [版本路线图](ROADMAP.md)
