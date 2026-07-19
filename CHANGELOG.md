@@ -3,6 +3,20 @@
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 格式，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [3.2.0] — 2026-07-19
+
+### Added
+- `.streamlit/config.toml` — Streamlit Cloud 主题 + 服务器配置
+- `assets/README.md` — 截图指南 + 架构图
+- README Features 对比表、Demo 章节、Deployment 章节
+- 项目徽章（shields.io）
+
+### Changed
+- README 重构为作品集主页（特性表、截图占位、部署指南）
+- `requirements.txt` 精简为直接依赖（8 个包，含版本下限）
+- `pyproject.toml` 版本升级至 3.2.0
+- 版本号升级至 3.2.0
+
 ## [3.1.0] — 2026-07-19
 
 ### Added
@@ -82,6 +96,8 @@
 - Visualizer（8 张 Matplotlib 图表，Agg 后端，中文字体）
 - ReportGenerator（自包含 HTML 报告，base64 内嵌图片）
 
+[3.1.0]: https://github.com/Corn555/cross-border-dashboard/compare/v3.0.0...v3.1.0
+[3.0.0]: https://github.com/Corn555/cross-border-dashboard/compare/v2.3.0...v3.0.0
 [2.3.0]: https://github.com/Corn555/cross-border-dashboard/compare/v2.2.0...v2.3.0
 [2.2.0]: https://github.com/Corn555/cross-border-dashboard/compare/v2.1.0...v2.2.0
 [2.1.0]: https://github.com/Corn555/cross-border-dashboard/compare/v1.0.0...v2.1.0

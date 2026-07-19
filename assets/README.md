@@ -1,16 +1,18 @@
-# Assets
+# Portfolio Assets
 
-Demo screenshots and architecture diagrams for the project portfolio.
+Screenshots and diagrams for the portfolio README.
 
-## Add Your Screenshots
+## Screenshots
 
-After running `streamlit run app.py`, capture screenshots of each page:
+After starting the app (`streamlit run app.py`), capture each page:
 
-- `screenshot_upload.png` — Data upload page
-- `screenshot_analysis.png` — Analysis overview with KPI cards
-- `screenshot_charts.png` — Chart grid display
-- `screenshot_report.png` — HTML report preview + download
-- `screenshot_about.png` — About page
+| File | Page | What to capture |
+|------|------|----------------|
+| `screenshot_upload.png` | 数据上传 | File uploader + default data button |
+| `screenshot_analysis.png` | 分析概览 | KPI cards + segment stats + filtered tables |
+| `screenshot_charts.png` | 图表展示 | Chart grid (2-column layout) |
+| `screenshot_report.png` | 报告下载 | Download button + HTML preview |
+| `screenshot_about.png` | 关于 | Project info + architecture |
 
 ## Architecture Diagram
 
@@ -21,7 +23,7 @@ After running `streamlit run app.py`, capture screenshots of each page:
 │   main.py (CLI)          app.py (Web)                   │
 │   终端文本输出             Streamlit UI                   │
 │                                                         │
-│   两者调用同一个 run_pipeline() 接口                        │
+│   Both call the same run_pipeline() interface           │
 └──────────────────────┬──────────────────────────────────┘
                        │
 ┌──────────────────────▼──────────────────────────────────┐
@@ -30,10 +32,10 @@ After running `streamlit run app.py`, capture screenshots of each page:
 │   src/pipeline/pipeline.py                              │
 │   run_pipeline(raw_data, processed_data,                │
 │                charts_output_dir, report_output_path)   │
-│   → PipelineResult                                      │
+│   -> PipelineResult                                     │
 │                                                         │
-│   6 阶段编排：Load → Profile → Clean → Analyze          │
-│              → Visualize → Report                       │
+│   6 phases: Load -> Profile -> Clean -> Analyze         │
+│            -> Visualize -> Report                       │
 └──────────────────────┬──────────────────────────────────┘
                        │
         ┌──────────────┼──────────────┐
@@ -41,11 +43,12 @@ After running `streamlit run app.py`, capture screenshots of each page:
 ┌───────▼──────┐ ┌─────▼─────┐ ┌─────▼──────────────┐
 │ Business     │ │ Data      │ │ Infrastructure     │
 │              │ │           │ │                    │
-│ sales_analyzer│ │data_loader│ │ src/config/       │
-│ customer_    │ │ data_     │ │ src/logger/       │
-│   analyzer   │ │ profiler  │ │ src/exceptions/   │
-│ visualizer   │ │ data_     │ │ src/models/       │
-│ report_      │ │ cleaner   │ │ src/ui/           │
+│ sales_       │ │ data_     │ │ src/config/       │
+│   analyzer   │ │   loader  │ │ src/logger/       │
+│ customer_    │ │ data_     │ │ src/exceptions/   │
+│   analyzer   │ │   profiler│ │ src/models/       │
+│ visualizer   │ │ data_     │ │ src/ui/           │
+│ report_      │ │   cleaner │ │                    │
 │   generator  │ │           │ │                    │
 └──────────────┘ └───────────┘ └────────────────────┘
 ```

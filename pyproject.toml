@@ -1,6 +1,6 @@
 [project]
 name = "cross-border-dashboard"
-version = "2.2.0"
+version = "3.2.0"
 description = "跨境电商销售数据分析平台"
 requires-python = ">=3.12"
 

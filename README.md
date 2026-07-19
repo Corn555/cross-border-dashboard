@@ -2,36 +2,68 @@
 
 跨境电商销售数据分析平台 — 我的第一个数据分析作品集项目。
 
+[![Python](https://img.shields.io/badge/Python-3.12+-blue)](https://www.python.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.52+-red)](https://streamlit.io/)
+[![pytest](https://img.shields.io/badge/tests-15%20passed-green)](tests/)
+[![ruff](https://img.shields.io/badge/lint-ruff-purple)](https://github.com/astral-sh/ruff)
+
 ## Overview
 
-本项目分析跨境电商交易数据，回答以下业务问题：
+本项目对 54 万条跨境电商交易记录进行端到端分析，提供 **CLI** 和 **Web** 两种使用方式：
 
 - **销售分析**：营收趋势、季节性波动、国家市场表现
 - **商品分析**：热销商品排行、退货率、商品品类洞察
 - **客户分析**：客户地理分布、RFM 分层、客户生命周期价值
 
-> V1.0 已冻结。V2.3 完成工程化升级。V3.1 完成 Streamlit 展示层 + 交互式分析。
+> V1.0 已冻结。V3.2 为当前版本，完成 Streamlit 展示层 + 交互式分析 + 发布就绪。
+
+## Features
+
+| 功能 | CLI (`main.py`) | Web (`app.py`) |
+|------|:---:|:---:|
+| 一键运行 6 阶段 Pipeline | ✅ | ✅ |
+| CSV 文件上传 | — | ✅ + 列校验 |
+| KPI 指标卡片 | 终端表格式 | `st.metric()` 卡片 |
+| 客户 RFM 分层 | ✅ | ✅ + 百分比 delta |
+| Top 商品 / 国家排行 | Top 5 | Top N（滑块可调） |
+| 国家筛选 | — | 多选过滤器 |
+| 8 张 Matplotlib 图表 | 保存为 PNG | 在线展示（2 列网格） |
+| HTML 报告 | 浏览器打开 | 在线预览 + 一键下载 |
+| 执行耗时 | — | ✅ |
+
+## Demo
+
+> Screenshots coming soon — see [assets/](assets/) for instructions.
+
+```
+streamlit run app.py
+```
+
+| 数据上传 | 分析概览 | 图表展示 |
+|:---:|:---:|:---:|
+| ![upload](assets/screenshot_upload.png) | ![analysis](assets/screenshot_analysis.png) | ![charts](assets/screenshot_charts.png) |
 
 ## Architecture
 
 ```
 Presentation Layer    main.py (CLI) + app.py (Web)  ← 双入口
     │
-Application Layer    src/pipeline/              ← 流程编排
+Application Layer    src/pipeline/              ← 流程编排（6 阶段）
     │
 Business Layer       sales_analyzer, customer_analyzer,
                      visualizer, report_generator  ← 纯计算
     │
 Data Layer           data_loader, data_cleaner  ← I/O
     │
-Infrastructure       src/config/, src/logger/, src/exceptions/, src/models/
+Infrastructure       src/config/, src/logger/, src/exceptions/,
+                     src/models/, src/ui/        ← 横切能力
 ```
 
-## V1.0 Results
+## Results
 
 | 指标 | 数值 |
 |------|------|
-| 清洗后交易记录 | 392,693 行 |
+| 清洗后交易记录 | 392,693 行（去重去脏 27.5%） |
 | 总营收 | $8,887,227 |
 | 总订单 | 18,532 |
 | 总客户 | 4,338 |
@@ -45,29 +77,25 @@ Infrastructure       src/config/, src/logger/, src/exceptions/, src/models/
 | Language | Python 3.12+ |
 | Data | Pandas, NumPy |
 | Visualization | Matplotlib |
-| Reports | HTML + CSS (self-contained, base64 images) |
+| Web UI | Streamlit |
+| Reports | HTML + CSS（自包含，base64 内嵌图片） |
 | Code Quality | Black, Ruff |
-| Testing | pytest |
-| Version Control | Git |
+| Testing | pytest（15 tests, 3 modules） |
+| Config | YAML + Python defaults（双层层叠） |
+| Version Control | Git（Conventional Commits） |
 
 ## Project Structure
 
 ```
 cross-border-dashboard/
-├── app.py                # Streamlit Web 入口（薄壳路由，~50 行）
+├── app.py                # Streamlit Web 入口（薄壳路由）
 ├── main.py               # CLI 入口
 ├── src/
-│   ├── ui/               # Streamlit 展示层组件（V3.1 新增）
-│   │   ├── components.py # 可复用组件（KPI、校验、过滤器）
-│   │   ├── upload.py     # 数据上传页
-│   │   ├── analysis.py   # 分析概览页（含交互式筛选）
-│   │   ├── charts.py     # 图表展示页
-│   │   ├── report.py     # 报告下载页
-│   │   └── about.py      # 关于页
-│   ├── config/           # 全局配置（Path 对象）
+│   ├── ui/               # Streamlit 展示层组件（7 modules）
+│   ├── config/           # 全局配置（YAML + Python defaults）
 │   ├── logger/           # 统一日志系统（控制台 + 文件）
 │   ├── exceptions/       # 自定义异常体系（6 类）
-│   ├── models/           # 数据模型（PipelineResult dataclass）
+│   ├── models/           # 数据模型（PipelineResult 等）
 │   ├── pipeline/         # 流程编排（6 阶段 Pipeline）
 │   ├── data_loader.py    # Data Layer — CSV → DataFrame
 │   ├── data_profiler.py  # Data Layer — 数据质量诊断
@@ -76,57 +104,60 @@ cross-border-dashboard/
 │   ├── customer_analyzer.py  # Business Layer — RFM 分层
 │   ├── visualizer.py     # Business Layer — 8 张图表
 │   └── report_generator.py   # Business Layer — HTML 报告
-├── tests/                # 单元测试（pytest）
-│   ├── conftest.py
-│   ├── test_data_loader.py
-│   ├── test_data_cleaner.py
-│   └── test_sales_analyzer.py
-├── assets/               # Demo 素材（V3.1 新增）
+├── tests/                # pytest（15 tests, 3 modules）
+├── assets/               # Demo 素材（截图 + 架构图）
 ├── docs/                 # 架构与规范文档
-├── data/                 # 原始 + 处理后数据
-├── output/               # 生成产物（图表 + 报告）
-├── logs/                 # 运行日志
-├── pyproject.toml        # 项目配置（Black, Ruff, pytest）
+├── .streamlit/           # Streamlit Cloud 部署配置
+├── pyproject.toml        # Black, Ruff, pytest
 ├── TECH_DEBT.md          # 技术债务 & 未来路线图
-├── ROADMAP.md            # 版本路线图
-└── README.md
+└── ROADMAP.md            # 版本路线图
 ```
 
-## How to Run
+## Quick Start
 
 ```bash
 # 1. 创建虚拟环境
 python -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
+source .venv/bin/activate       # Windows: .venv\Scripts\activate
 
 # 2. 安装依赖
 pip install -r requirements.txt
 
-# 3. 放入原始数据 — 将 sales.csv 复制到 data/raw/sales.csv
+# 3. 放入数据 — 将 sales.csv 复制到 data/raw/sales.csv
 
 # 4. 运行（二选一）
-# CLI 模式
-python main.py
-# Web 模式（Streamlit）
-streamlit run app.py
+python main.py                  # CLI 模式
+streamlit run app.py            # Web 模式
 
-# 5. 查看报告 — 浏览器打开 output/reports/report.html
+# 5. 测试
+pytest tests/ -q
+
+# 6. 检查代码质量
+ruff check src/ tests/ main.py app.py
 ```
 
-## How to Test
+## Deployment (Streamlit Community Cloud)
 
-```bash
-# 运行全部测试
-pytest tests/
+1. Push this repo to GitHub
+2. Go to [share.streamlit.io](https://share.streamlit.io)
+3. Click "New app" → select repo → set Main file path to `app.py`
+4. Deploy — no additional config needed
 
-# 带详细输出
-pytest tests/ -v
+The app auto-detects `config/config.yaml` if present; otherwise falls back to Python defaults.
 
-# 运行单个测试文件
-pytest tests/test_sales_analyzer.py -v
-```
+## Version Progress
 
-## How to Format Code
+| Version | 主题 | 状态 |
+|---------|------|------|
+| V1.0 | Local Analytics — 6-step Pipeline + HTML Report | ✅ 已冻结 |
+| V2.1–2.3 | Core Engineering — Config, Logger, Exceptions, ADR | ✅ 已完成 |
+| V3.0–3.2 | Streamlit Dashboard — Web UI, Filters, Release Ready | ✅ 当前 |
+| V4.0 | Interactive Analytics — Plotly | 🚧 规划中 |
+| V5.0 | AI Report — LLM | 🚧 规划中 |
+| V6.0 | Database Integration | 🚧 规划中 |
+| V7.0 | Deployment — Docker + Cloud | 🚧 规划中 |
+
+## Development
 
 ```bash
 # 代码格式化
@@ -139,56 +170,9 @@ ruff check src/ tests/ main.py app.py
 ruff check --fix src/ tests/ main.py app.py
 ```
 
-## How to Add a New Module
+**Adding a new Streamlit page**: create `src/ui/<page>.py` with a `show()` function, then register it in `app.py`.
 
-1. **确定模块归属层** — 参照 [ARCHITECTURE_V2.md](docs/ARCHITECTURE_V2.md) 的四层模型
-2. **创建源文件** — `src/<layer>/<module>.py`，遵循 [DEVELOPMENT.md](docs/DEVELOPMENT.md) 模板
-3. **添加类型标注** — 所有公共函数签名必须有完整 type hints
-4. **使用 Logger** — `logger = get_logger(__name__)`，不用 `print()`
-5. **编写测试** — `tests/test_<module>.py`，使用 conftest.py 的 fixture
-6. **更新文档** — 如涉及架构变更，更新相关 docs/
-7. **运行全量验证** — `pytest && ruff check && python main.py`
-
-## Version Progress
-
-| Version | 主题 | 状态 |
-|---------|------|------|
-| V1.0 | Local Analytics | ✅ 已冻结 |
-| V2.3 | Core Engineering — YAML Config, Result Models, ADR | ✅ 已完成 |
-| V3.0 | Streamlit Dashboard — App Shell | ✅ 已完成 |
-| V3.1 | Product Experience — UI Package, Filters, Demo Ready | ✅ 当前 |
-| V4.0 | Interactive Analytics — Plotly | 🚧 规划中 |
-| V5.0 | AI Report — LLM | 🚧 规划中 |
-| V6.0 | Database Integration | 🚧 规划中 |
-| V7.0 | Deployment — Docker + Cloud | 🚧 规划中 |
-
-## V3 — Streamlit Dashboard
-
-V3 在 V2 的工程基础上叠加了 Web 展示层，核心架构不变：
-
-```
-app.py (Streamlit, ~50 行薄壳路由)
-    │
-src/ui/             —— Presentation Layer（7 个模块，纯渲染）
-    │
-src/pipeline/       —— Application Layer（复用 V2，零改动）
-    │
-src/ models, config, logger, exceptions  —— Infrastructure（复用 V2）
-```
-
-- **UI 架构**：`app.py` 薄壳路由 → `src/ui/` 页面模块 → `src/ui/components.py` 可复用组件
-- **Sidebar 导航**：数据上传 / 分析概览 / 图表展示 / 报告下载 / 关于
-- **CSV 上传校验**：必需列检测 + 编码自动识别
-- **KPI 卡片**：总营收、订单数、客户数、客单价（`st.metric()`）
-- **交互式筛选**：国家多选 + Top N 滑块（分析概览页，不重新运行 Pipeline）
-- **图表展示**：8 张图表以 2 列网格展示（`st.image()`）
-- **报告下载**：HTML 在线预览 + 一键下载（`st.download_button()`）
-- **执行耗时**：Pipeline 完成后显示运行时长
-- **配置驱动**：所有路径和参数从 `config/config.yaml` 读取
-
-```bash
-streamlit run app.py
-```
+**Adding a new analysis module**: see [DEVELOPMENT.md](docs/DEVELOPMENT.md) for the full template.
 
 ## Documentation
 
