@@ -3,6 +3,20 @@
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 格式，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [3.1.0] — 2026-07-19
+
+### Added
+- `src/ui/` package — 7 个模块（components, upload, analysis, charts, report, about）
+- CSV 上传校验（必需列检测 + 编码自动识别）
+- 交互式过滤器：国家多选 + Top N 滑块（分析概览页）
+- 执行耗时显示（`time.perf_counter()`）
+- `assets/` 目录（截图 + 架构图占位）
+
+### Changed
+- `app.py` 重构为薄壳路由（185 行 → 50 行），页面逻辑移至 `src/ui/`
+- 可复用组件抽取至 `src/ui/components.py`
+- 版本号升级至 3.1.0
+
 ## [3.0.0] — 2026-07-19
 
 ### Added

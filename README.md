@@ -10,7 +10,7 @@
 - **商品分析**：热销商品排行、退货率、商品品类洞察
 - **客户分析**：客户地理分布、RFM 分层、客户生命周期价值
 
-> V1.0 已冻结。V2.3 完成工程化升级。V3.0 新增 Streamlit Web 展示层。
+> V1.0 已冻结。V2.3 完成工程化升级。V3.1 完成 Streamlit 展示层 + 交互式分析。
 
 ## Architecture
 
@@ -54,9 +54,16 @@ Infrastructure       src/config/, src/logger/, src/exceptions/, src/models/
 
 ```
 cross-border-dashboard/
-├── app.py                # Streamlit Web 入口（V3 新增）
+├── app.py                # Streamlit Web 入口（薄壳路由，~50 行）
 ├── main.py               # CLI 入口
 ├── src/
+│   ├── ui/               # Streamlit 展示层组件（V3.1 新增）
+│   │   ├── components.py # 可复用组件（KPI、校验、过滤器）
+│   │   ├── upload.py     # 数据上传页
+│   │   ├── analysis.py   # 分析概览页（含交互式筛选）
+│   │   ├── charts.py     # 图表展示页
+│   │   ├── report.py     # 报告下载页
+│   │   └── about.py      # 关于页
 │   ├── config/           # 全局配置（Path 对象）
 │   ├── logger/           # 统一日志系统（控制台 + 文件）
 │   ├── exceptions/       # 自定义异常体系（6 类）
@@ -74,11 +81,11 @@ cross-border-dashboard/
 │   ├── test_data_loader.py
 │   ├── test_data_cleaner.py
 │   └── test_sales_analyzer.py
+├── assets/               # Demo 素材（V3.1 新增）
 ├── docs/                 # 架构与规范文档
 ├── data/                 # 原始 + 处理后数据
 ├── output/               # 生成产物（图表 + 报告）
 ├── logs/                 # 运行日志
-├── main.py               # CLI 入口
 ├── pyproject.toml        # 项目配置（Black, Ruff, pytest）
 ├── TECH_DEBT.md          # 技术债务 & 未来路线图
 ├── ROADMAP.md            # 版本路线图
@@ -123,13 +130,13 @@ pytest tests/test_sales_analyzer.py -v
 
 ```bash
 # 代码格式化
-black src/ tests/ main.py
+black src/ tests/ main.py app.py
 
 # 代码检查
-ruff check src/ tests/ main.py
+ruff check src/ tests/ main.py app.py
 
 # 自动修复
-ruff check --fix src/ tests/ main.py
+ruff check --fix src/ tests/ main.py app.py
 ```
 
 ## How to Add a New Module
@@ -148,29 +155,35 @@ ruff check --fix src/ tests/ main.py
 |---------|------|------|
 | V1.0 | Local Analytics | ✅ 已冻结 |
 | V2.3 | Core Engineering — YAML Config, Result Models, ADR | ✅ 已完成 |
-| V3.0 | Streamlit Dashboard | ✅ 当前 |
+| V3.0 | Streamlit Dashboard — App Shell | ✅ 已完成 |
+| V3.1 | Product Experience — UI Package, Filters, Demo Ready | ✅ 当前 |
 | V4.0 | Interactive Analytics — Plotly | 🚧 规划中 |
 | V5.0 | AI Report — LLM | 🚧 规划中 |
 | V6.0 | Database Integration | 🚧 规划中 |
 | V7.0 | Deployment — Docker + Cloud | 🚧 规划中 |
 
-## V3.0 — Streamlit Dashboard
+## V3 — Streamlit Dashboard
 
 V3 在 V2 的工程基础上叠加了 Web 展示层，核心架构不变：
 
 ```
-app.py (Streamlit)  —— Presentation Layer（新增，零业务逻辑）
+app.py (Streamlit, ~50 行薄壳路由)
+    │
+src/ui/             —— Presentation Layer（7 个模块，纯渲染）
     │
 src/pipeline/       —— Application Layer（复用 V2，零改动）
     │
 src/ models, config, logger, exceptions  —— Infrastructure（复用 V2）
 ```
 
+- **UI 架构**：`app.py` 薄壳路由 → `src/ui/` 页面模块 → `src/ui/components.py` 可复用组件
 - **Sidebar 导航**：数据上传 / 分析概览 / 图表展示 / 报告下载 / 关于
-- **CSV 上传**：支持替换默认数据源，上传后直接运行 Pipeline
+- **CSV 上传校验**：必需列检测 + 编码自动识别
 - **KPI 卡片**：总营收、订单数、客户数、客单价（`st.metric()`）
+- **交互式筛选**：国家多选 + Top N 滑块（分析概览页，不重新运行 Pipeline）
 - **图表展示**：8 张图表以 2 列网格展示（`st.image()`）
 - **报告下载**：HTML 在线预览 + 一键下载（`st.download_button()`）
+- **执行耗时**：Pipeline 完成后显示运行时长
 - **配置驱动**：所有路径和参数从 `config/config.yaml` 读取
 
 ```bash
