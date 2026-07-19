@@ -142,12 +142,29 @@ ruff check --fix src/ tests/ main.py
 | Version | 主题 | 状态 |
 |---------|------|------|
 | V1.0 | Local Analytics | ✅ 已冻结 |
-| V2.2 | Core Engineering — Config, Logger, Exceptions, Type Hints, Testing | ✅ 完成 |
-| V3.0 | Streamlit Dashboard | 🚧 规划中 |
+| V2.3 | Core Engineering — YAML Config, Result Models, ADR | ✅ 当前 |
+| V3.0 | Streamlit Dashboard | 🚧 下一阶段 |
 | V4.0 | Interactive Analytics — Plotly | 🚧 规划中 |
 | V5.0 | AI Report — LLM | 🚧 规划中 |
 | V6.0 | Database Integration | 🚧 规划中 |
 | V7.0 | Deployment — Docker + Cloud | 🚧 规划中 |
+
+## V3 Preview — Streamlit Dashboard
+
+V3 将在 V2 的工程基础上叠加 Web 展示层：
+
+```
+app.py (Streamlit)  —— Presentation Layer（新增）
+    │
+src/pipeline/       —— Application Layer（复用 V2，零改动）
+    │
+src/ models, config, logger, exceptions  —— Infrastructure（复用 V2）
+```
+
+- **Sidebar 导航**：概览 / 销售分析 / 客户分析 / 数据上传
+- **互动过滤器**：日期范围、国家多选、Top N 滑块
+- **图表展示**：复用 V1 的 8 张 Matplotlib 图表（`st.pyplot()`）
+- **Config 驱动**：`config/config.yaml` 管理 UI 设置
 
 ## Documentation
 
@@ -155,5 +172,7 @@ ruff check --fix src/ tests/ main.py
 - [V2+ 系统架构](docs/ARCHITECTURE_V2.md)（分层模型 + 设计原则）
 - [开发规范](docs/DEVELOPMENT.md)
 - [Config 设计方案](docs/CONFIG_DESIGN.md)
+- [架构决策记录](docs/decisions/)（ADR-001 ~ 004）
+- [更新日志](CHANGELOG.md)
 - [技术债务 & 路线图](TECH_DEBT.md)
 - [版本路线图](ROADMAP.md)

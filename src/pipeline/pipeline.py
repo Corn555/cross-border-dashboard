@@ -19,7 +19,7 @@ from src.exceptions import (
     VisualizationError,
 )
 from src.logger import get_logger
-from src.models import PipelineResult
+from src.models import CustomerResult, PipelineResult, SalesResult
 from src.report_generator import generate_report
 from src.sales_analyzer import analyze_sales
 from src.visualizer import create_charts
@@ -112,8 +112,8 @@ def run_pipeline(
 
     logger.info("Pipeline finished")
     return PipelineResult(
-        sales_result=sales,
-        customer_result=customers,
+        sales_result=SalesResult.from_dict(sales),
+        customer_result=CustomerResult.from_dict(customers),
         report_path=report_path,
         charts=charts,
     )

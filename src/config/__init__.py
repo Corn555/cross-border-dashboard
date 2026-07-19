@@ -18,6 +18,7 @@ from .config import (
     REPORTS_OUTPUT_DIR,
     VERSION,
 )
+from .loader import load_config
 
 __all__ = [
     "PROJECT_NAME",
@@ -30,4 +31,5 @@ __all__ = [
     "REPORT_OUTPUT_PATH",
     "CHART_FIGURE_SIZE",
     "CHART_DPI",
+    "load_config",
 ]

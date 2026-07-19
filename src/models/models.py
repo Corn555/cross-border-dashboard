@@ -1,16 +1,6 @@
-"""
-模块：数据模型
-职责：定义 Pipeline 各阶段的返回数据结构。
-"""
-from dataclasses import dataclass, field
-from pathlib import Path
+"""向后兼容 re-export。新代码请直接从 src.models 导入。"""
+from .customer_result import CustomerResult
+from .pipeline_result import PipelineResult
+from .sales_result import SalesResult
 
-
-@dataclass
-class PipelineResult:
-    """Pipeline 完整执行结果。"""
-
-    sales_result: dict
-    customer_result: dict
-    report_path: Path
-    charts: list[str] = field(default_factory=list)
+__all__ = ["PipelineResult", "SalesResult", "CustomerResult"]

@@ -3,9 +3,11 @@
 职责：项目数据模型定义。
 
 用法：
-    from src.models import PipelineResult
+    from src.models import PipelineResult, SalesResult, CustomerResult
 """
 
-from .models import PipelineResult
+from .customer_result import CustomerResult
+from .pipeline_result import PipelineResult
+from .sales_result import SalesResult
 
-__all__ = ["PipelineResult"]
+__all__ = ["PipelineResult", "SalesResult", "CustomerResult"]

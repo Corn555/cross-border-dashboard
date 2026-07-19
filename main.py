@@ -3,7 +3,7 @@
 
 职责：
   1. 初始化 Logger
-  2. 加载 Config
+  2. 加载 Config（YAML → Python 默认值降级）
   3. 调用 Pipeline
   4. 统一异常处理
   5. 输出完成信息
@@ -12,13 +12,7 @@
 """
 import sys
 
-from src.config import (
-    CHARTS_OUTPUT_DIR,
-    PROCESSED_DATA_PATH,
-    RAW_DATA_PATH,
-    REPORT_OUTPUT_PATH,
-    VERSION,
-)
+from src.config import load_config
 from src.exceptions import ProjectError
 from src.logger import get_logger, setup_logging
 from src.pipeline import run_pipeline
@@ -26,16 +20,17 @@ from src.pipeline import run_pipeline
 logger = get_logger(__name__)
 
 
-def main():
+def main() -> None:
     """程序入口 — 初始化基础设施，启动 Pipeline。"""
-    logger.info("Program started (v%s)", VERSION)
+    cfg = load_config()
+    logger.info("Program started (v%s)", cfg["project"]["version"])
 
     try:
         result = run_pipeline(
-            raw_data_path=RAW_DATA_PATH,
-            processed_data_path=PROCESSED_DATA_PATH,
-            charts_output_dir=CHARTS_OUTPUT_DIR,
-            report_output_path=REPORT_OUTPUT_PATH,
+            raw_data_path=cfg["paths"]["raw_data"],
+            processed_data_path=cfg["paths"]["processed_data"],
+            charts_output_dir=cfg["paths"]["charts_dir"],
+            report_output_path=cfg["paths"]["report_output"],
         )
     except ProjectError:
         logger.exception("流程执行失败")
