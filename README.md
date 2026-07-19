@@ -7,6 +7,10 @@
 [![pytest](https://img.shields.io/badge/tests-15%20passed-green)](tests/)
 [![ruff](https://img.shields.io/badge/lint-ruff-purple)](https://github.com/astral-sh/ruff)
 
+## Preview
+
+![Dashboard](assets/screenshot_upload.png)
+
 ## Overview
 
 本项目对 54 万条跨境电商交易记录进行端到端分析，提供 **CLI** 和 **Web** 两种使用方式：
