@@ -17,6 +17,11 @@
 
 > V1.0 已冻结。V3.2 为当前版本，完成 Streamlit 展示层 + 交互式分析 + 发布就绪。
 
+## Live Demo(在线展示demo)
+
+https://cross-border-dashboard-ky6ia5nfbdjrjz8gnvplapp.streamlit.app/
+
+
 ## Features
 
 | 功能 | CLI (`main.py`) | Web (`app.py`) |
