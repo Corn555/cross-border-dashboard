@@ -176,7 +176,7 @@ ruff check --fix src/ tests/ main.py app.py
 
 ## Documentation
 
-- [V1 系统架构](docs/ARCHITECTURE.md)（已冻结）
+- [V1 系统架构](docs/ARCHITECTURE_V1.md)（已冻结）
 - [V2+ 系统架构](docs/ARCHITECTURE_V2.md)（分层模型 + 设计原则）
 - [开发规范](docs/DEVELOPMENT.md)
 - [Config 设计方案](docs/CONFIG_DESIGN.md)
@@ -184,3 +184,7 @@ ruff check --fix src/ tests/ main.py app.py
 - [更新日志](CHANGELOG.md)
 - [技术债务 & 路线图](TECH_DEBT.md)
 - [版本路线图](ROADMAP.md)
+
+## License
+
+MIT — see [LICENSE](LICENSE) for details.

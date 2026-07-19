@@ -1,18 +1,21 @@
 # Portfolio Assets
 
-Screenshots and diagrams for the portfolio README.
+Screenshots and diagrams for the project portfolio.
 
 ## Screenshots
 
 After starting the app (`streamlit run app.py`), capture each page:
 
-| File | Page | What to capture |
-|------|------|----------------|
-| `screenshot_upload.png` | 数据上传 | File uploader + default data button |
-| `screenshot_analysis.png` | 分析概览 | KPI cards + segment stats + filtered tables |
-| `screenshot_charts.png` | 图表展示 | Chart grid (2-column layout) |
-| `screenshot_report.png` | 报告下载 | Download button + HTML preview |
-| `screenshot_about.png` | 关于 | Project info + architecture |
+| File | Page | Description |
+|------|------|-------------|
+| `dashboard-home.png` | 分析概览 | KPI cards + RFM segments + filtered tables |
+| `upload-page.png` | 数据上传 | CSV uploader + validation + run button |
+| `analysis-page.png` | 分析概览 | Interactive filters (country + Top N) |
+| `charts-page.png` | 图表展示 | 8 charts in 2-column grid |
+| `report-page.png` | 报告下载 | Download button + HTML preview |
+| `architecture.png` | — | Four-layer architecture diagram |
+
+Optional: `demo.gif` — screen recording of the full workflow.
 
 ## Architecture Diagram
 
@@ -21,7 +24,7 @@ After starting the app (`streamlit run app.py`), capture each page:
 │                   Presentation Layer                     │
 │                                                         │
 │   main.py (CLI)          app.py (Web)                   │
-│   终端文本输出             Streamlit UI                   │
+│   Terminal output         Streamlit UI                   │
 │                                                         │
 │   Both call the same run_pipeline() interface           │
 └──────────────────────┬──────────────────────────────────┘

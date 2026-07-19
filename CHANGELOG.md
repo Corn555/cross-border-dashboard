@@ -96,6 +96,7 @@
 - Visualizer（8 张 Matplotlib 图表，Agg 后端，中文字体）
 - ReportGenerator（自包含 HTML 报告，base64 内嵌图片）
 
+[3.2.0]: https://github.com/Corn555/cross-border-dashboard/compare/v3.1.0...v3.2.0
 [3.1.0]: https://github.com/Corn555/cross-border-dashboard/compare/v3.0.0...v3.1.0
 [3.0.0]: https://github.com/Corn555/cross-border-dashboard/compare/v2.3.0...v3.0.0
 [2.3.0]: https://github.com/Corn555/cross-border-dashboard/compare/v2.2.0...v2.3.0
