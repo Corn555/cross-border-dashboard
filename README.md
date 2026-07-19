@@ -10,12 +10,12 @@
 - **商品分析**：热销商品排行、退货率、商品品类洞察
 - **客户分析**：客户地理分布、RFM 分层、客户生命周期价值
 
-> V1.0 已冻结。V2.2 完成工程化升级：Config / Logger / Exceptions / Type Hints / Testing / PipelineResult。
+> V1.0 已冻结。V2.3 完成工程化升级。V3.0 新增 Streamlit Web 展示层。
 
 ## Architecture
 
 ```
-Presentation Layer    main.py (CLI)              ← 用户入口
+Presentation Layer    main.py (CLI) + app.py (Web)  ← 双入口
     │
 Application Layer    src/pipeline/              ← 流程编排
     │
@@ -54,6 +54,8 @@ Infrastructure       src/config/, src/logger/, src/exceptions/, src/models/
 
 ```
 cross-border-dashboard/
+├── app.py                # Streamlit Web 入口（V3 新增）
+├── main.py               # CLI 入口
 ├── src/
 │   ├── config/           # 全局配置（Path 对象）
 │   ├── logger/           # 统一日志系统（控制台 + 文件）
@@ -95,8 +97,11 @@ pip install -r requirements.txt
 
 # 3. 放入原始数据 — 将 sales.csv 复制到 data/raw/sales.csv
 
-# 4. 运行全流程
+# 4. 运行（二选一）
+# CLI 模式
 python main.py
+# Web 模式（Streamlit）
+streamlit run app.py
 
 # 5. 查看报告 — 浏览器打开 output/reports/report.html
 ```
@@ -142,29 +147,35 @@ ruff check --fix src/ tests/ main.py
 | Version | 主题 | 状态 |
 |---------|------|------|
 | V1.0 | Local Analytics | ✅ 已冻结 |
-| V2.3 | Core Engineering — YAML Config, Result Models, ADR | ✅ 当前 |
-| V3.0 | Streamlit Dashboard | 🚧 下一阶段 |
+| V2.3 | Core Engineering — YAML Config, Result Models, ADR | ✅ 已完成 |
+| V3.0 | Streamlit Dashboard | ✅ 当前 |
 | V4.0 | Interactive Analytics — Plotly | 🚧 规划中 |
 | V5.0 | AI Report — LLM | 🚧 规划中 |
 | V6.0 | Database Integration | 🚧 规划中 |
 | V7.0 | Deployment — Docker + Cloud | 🚧 规划中 |
 
-## V3 Preview — Streamlit Dashboard
+## V3.0 — Streamlit Dashboard
 
-V3 将在 V2 的工程基础上叠加 Web 展示层：
+V3 在 V2 的工程基础上叠加了 Web 展示层，核心架构不变：
 
 ```
-app.py (Streamlit)  —— Presentation Layer（新增）
+app.py (Streamlit)  —— Presentation Layer（新增，零业务逻辑）
     │
 src/pipeline/       —— Application Layer（复用 V2，零改动）
     │
 src/ models, config, logger, exceptions  —— Infrastructure（复用 V2）
 ```
 
-- **Sidebar 导航**：概览 / 销售分析 / 客户分析 / 数据上传
-- **互动过滤器**：日期范围、国家多选、Top N 滑块
-- **图表展示**：复用 V1 的 8 张 Matplotlib 图表（`st.pyplot()`）
-- **Config 驱动**：`config/config.yaml` 管理 UI 设置
+- **Sidebar 导航**：数据上传 / 分析概览 / 图表展示 / 报告下载 / 关于
+- **CSV 上传**：支持替换默认数据源，上传后直接运行 Pipeline
+- **KPI 卡片**：总营收、订单数、客户数、客单价（`st.metric()`）
+- **图表展示**：8 张图表以 2 列网格展示（`st.image()`）
+- **报告下载**：HTML 在线预览 + 一键下载（`st.download_button()`）
+- **配置驱动**：所有路径和参数从 `config/config.yaml` 读取
+
+```bash
+streamlit run app.py
+```
 
 ## Documentation
 

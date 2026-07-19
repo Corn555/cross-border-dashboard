@@ -22,5 +22,6 @@ python-dateutil==2.9.0.post0
 pytokens==0.4.1
 PyYAML==6.0.3
 ruff==0.15.22
+streamlit==1.52.2
 six==1.17.0
 tzdata==2026.3

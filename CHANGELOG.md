@@ -3,6 +3,20 @@
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 格式，
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [3.0.0] — 2026-07-19
+
+### Added
+- Streamlit Web 展示层（`app.py`）— 第二个 Presentation Layer 入口
+- 5 页面导航：数据上传、分析概览、图表展示、报告下载、关于
+- CSV 文件上传功能（可替换默认数据源）
+- KPI 指标卡片（总营收、订单数、客户数、客单价）
+- 8 张图表展示（`st.image()` + 2 列网格布局）
+- HTML 报告在线预览 + 下载（`st.download_button()`）
+
+### Changed
+- 版本号升级至 3.0.0（V3 Streamlit 里程碑）
+- `requirements.txt` 新增 `streamlit`
+
 ## [2.3.0] — 2026-07-18
 
 ### Added
